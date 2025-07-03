@@ -1,4 +1,4 @@
-# Autores: Franco Rodriguez; Gonzalo Rizzo
+# Autores: Franco Rodriguez & Gonzalo Rizzo
 # Aim: procesamiento de los datos de manejo de los cultivos.
 
 # load libraries
@@ -54,10 +54,10 @@ mng[regimen == "Secano", regimen := "rainfed"]
 mng[regimen == "Regado", regimen := "irrigated"]
 
 # definir la ruta de exportación 
-ruta_exportacion <- "outputs/manejo.csv" 
+output_path <- "outputs/management.csv" 
 
 # make output directory
 dir.create("outputs", showWarnings = FALSE)
 
 # exportar la tabla como archivo CSV
-fwrite(mng, file = ruta_exportacion)
+fwrite(mng, file = output_path)
