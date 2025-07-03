@@ -38,8 +38,17 @@ mng <- mng[, !c("Fecha_inicio_siembra", "Fecha_fin_siembra", "Fecha_inicio_cosec
 
 # update names
 setnames(mng,
-         c("CODE", "densidad", "Fecha_Siembra", "Fecha_Cosecha"),
-         c("name_2", "PPOP", "PDAT", "HDAT"))
+         c("CODE", "Cultivo", "Regimen_hidrico", "Madurez_cultivar", "densidad",
+           "Fecha_Siembra", "Fecha_Cosecha"),
+         c("name_2", "crop", "regimen", "cultivar_maturity", "PPOP", "PDAT",
+           "HDAT"))
+
+# make crop lower case
+mng[, crop := tolower(crop)]
+
+# replace Spanish by English water regimen
+mng[regimen == "Secano", regimen := "rainfed"]
+mng[regimen == "Regado", regimen := "irrigated"]
 
 # definir la ruta de exportación 
 ruta_exportacion <- "outputs/manejo.csv" 
