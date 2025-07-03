@@ -5,21 +5,21 @@
 library(data.table)
 
 # cargando manejos
-manejo <- fread("data/manejo_cultivo.csv", encoding = "Latin-1")
+mng <- fread("data/manejo_cultivo.csv", encoding = "Latin-1")
 
 # eliminando las columnas N y Rotacion de cultivos anuales
-manejo <- manejo[, !c("Rotaciones"), with = FALSE]
+mng <- mng[, !c("Rotaciones"), with = FALSE]
 
 # columna Ventana de siembra y Ventana de cosecha/terminacion en dos fechas de
 # tipo IDate
-manejo[, c("Fecha_inicio_siembra", "Fecha_fin_siembra") := 
+mng[, c("Fecha_inicio_siembra", "Fecha_fin_siembra") := 
          tstrsplit(Ventana_siembra, "-", fixed = TRUE)]
 
-manejo[, c("Fecha_inicio_cosecha", "Fecha_fin_cosecha") := 
+mng[, c("Fecha_inicio_cosecha", "Fecha_fin_cosecha") := 
          tstrsplit(Ventana_cosecha, "-", fixed = TRUE)]
 
 # transformando a formato IDate las fechas de ventanas de siembra y cosecha 
-manejo[, `:=`(
+mng[, `:=`(
   Fecha_inicio_siembra = as.IDate(Fecha_inicio_siembra, format = "%d/%m"),
   Fecha_fin_siembra = as.IDate(Fecha_fin_siembra, format = "%d/%m"),
   Fecha_inicio_cosecha = as.IDate(Fecha_inicio_cosecha, format = "%d/%m"),
@@ -27,17 +27,17 @@ manejo[, `:=`(
   )]
 
 # eliminando las columnas Ventana_siembra y Ventana_cosecha
-manejo <- manejo[, !c("Ventana_siembra", "Ventana_cosecha"), with = FALSE]
+mng <- mng[, !c("Ventana_siembra", "Ventana_cosecha"), with = FALSE]
 
 # Crear columnas con el promedio de fechas de siembra y cosecha
-manejo[, Fecha_Siembra := as.IDate((as.numeric(Fecha_inicio_siembra) + as.numeric(Fecha_fin_siembra)) / 2, origin = "1970-01-01")]
-manejo[, Fecha_Cosecha := as.IDate((as.numeric(Fecha_inicio_cosecha) + as.numeric(Fecha_fin_cosecha)) / 2, origin = "1970-01-01")]
+mng[, Fecha_Siembra := as.IDate((as.numeric(Fecha_inicio_siembra) + as.numeric(Fecha_fin_siembra)) / 2, origin = "1970-01-01")]
+mng[, Fecha_Cosecha := as.IDate((as.numeric(Fecha_inicio_cosecha) + as.numeric(Fecha_fin_cosecha)) / 2, origin = "1970-01-01")]
 
 # eliminando las columnas Ventana_siembra y Ventana_cosecha
-manejo <- manejo[, !c("Fecha_inicio_siembra", "Fecha_fin_siembra", "Fecha_inicio_cosecha", "Fecha_fin_cosecha", "Cultivar_dominante"), with = FALSE]
+mng <- mng[, !c("Fecha_inicio_siembra", "Fecha_fin_siembra", "Fecha_inicio_cosecha", "Fecha_fin_cosecha", "Cultivar_dominante"), with = FALSE]
 
 # update names
-setnames(manejo,
+setnames(mng,
          c("densidad", "Fecha_Siembra", "Fecha_Cosecha"),
          c("PPOP", "PDAT", "HDAT"))
 
@@ -48,7 +48,4 @@ ruta_exportacion <- "outputs/manejo.csv"
 dir.create("outputs", showWarnings = FALSE)
 
 # exportar la tabla como archivo CSV
-fwrite(manejo, file = ruta_exportacion, row.names = FALSE)
-
-
-
+fwrite(mng, file = ruta_exportacion)
