@@ -24,17 +24,6 @@ MANEJO <- fread("outputs/manejo.csv", encoding = "Latin-1")
 
 
 ROTACIONES <- read.csv("outputs/ROTACIONES_ESTACION.csv")
-setDT(ROTACIONES)
-head(ROTACIONES)
-str(ROTACIONES)
-
-# Crear tabla base
-BASE <- data.table(
-  CODE = c("UYLE", "UYTT", "UYME", "UYFL", "UYYO", "UYTR", "UYPA")
-)
-
-BASE <- merge(BASE, SELECT_PEDON, by = "CODE", all.x = TRUE)
-head(BASE)
 
 # Hacer el join 
 BASE_ROT <- ROTACIONES[BASE, on = "CODE", allow.cartesian = TRUE]
@@ -43,7 +32,7 @@ BASE_ROT <- ROTACIONES[BASE, on = "CODE", allow.cartesian = TRUE]
 BASE_ROT_MANEJO <- MANEJO[BASE_ROT, on = "CODE", allow.cartesian = TRUE]
 
 # Agregar una columna nueva sin datos
-BASE_ROT_MANEJO[, INGENIO := NA]
+BASE_ROT_MANEJO[, INGENO := NA]
 setnames(BASE_ROT_MANEJO, "PEDON", "ID_SOIL")
 
 imputs_dssat <- BASE_ROT_MANEJO
