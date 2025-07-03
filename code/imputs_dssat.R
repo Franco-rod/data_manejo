@@ -2,18 +2,13 @@
 
 library(data.table)
 
-PEDON <- read.csv("outputs/soils/dssat/initial_condition_soils_info.csv")
-
-head(PEDON)
-
-setDT(PEDON)
+PEDON <- fread("data/initial_condition_soils_info.csv")
 
 # Seleccionar PEDON únicos por estacion
 SELECT_PEDON <- PEDON[, .SD[1], by = .(name, PEDON)][, .(name, PEDON, PERFIL)]
 
-unique(SELECT_PEDON$name)
-
-SELECT_PEDON[, name := fcase(
+# creat dssat_code for each station
+SELECT_PEDON[, dssat_code := fcase(
   name == "Treinta y Tres", "UYTT",
   name == "Trinidad G4", "UYTR",
   name == "Palmitas (TP)", "UYPA",
@@ -22,27 +17,11 @@ SELECT_PEDON[, name := fcase(
   name == "Young G3", "UYYO",
   name == "Mercerdes G3", "UYME",  
   default = name  # Para mantener cualquier otro valor sin cambio
-)]
+  )]
 
-setnames(SELECT_PEDON, "name", "CODE")
+# read management data
+MANEJO <- fread("outputs/manejo.csv", encoding = "Latin-1")
 
-MANEJO <- fread("outputs/manejo_cultivo.csv", encoding = "Latin-1")
-
-setDT(MANEJO)
-head(MANEJO)
-str(MANEJO)
-unique(MANEJO$CODE)
-
-MANEJO[, CODE := fcase(
-  CODE == "Treinta y Tres", "UYTT",
-  CODE == "Trinidad",        "UYTR",
-  CODE == "Palmitas",        "UYPA",
-  CODE == "Florida",         "UYFL",
-  CODE == "La Estanzuela",   "UYLE",
-  CODE == "Young",           "UYYO",
-  CODE == "Mercedes",        "UYME",
-  default = CODE  # mantiene cualquier otro valor
-)]
 
 ROTACIONES <- read.csv("outputs/ROTACIONES_ESTACION.csv")
 setDT(ROTACIONES)
