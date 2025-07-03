@@ -51,7 +51,7 @@ mng[, c("crop", "cultivar_maturity") := lapply(.SD, tolower), .SDcols = c("crop"
 
 # replace Spanish by English water regimen
 mng[regimen == "Secano", regimen := "rainfed"]
-mng[regimen == "Regado", regimen := "irrigated"]
+mng[regimen == "Riego", regimen := "irrigated"]
 
 # definir la ruta de exportación 
 output_path <- "outputs/management.csv" 
