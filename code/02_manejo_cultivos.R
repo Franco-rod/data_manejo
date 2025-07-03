@@ -38,8 +38,8 @@ mng <- mng[, !c("Fecha_inicio_siembra", "Fecha_fin_siembra", "Fecha_inicio_cosec
 
 # update names
 setnames(mng,
-         c("densidad", "Fecha_Siembra", "Fecha_Cosecha"),
-         c("PPOP", "PDAT", "HDAT"))
+         c("CODE", "densidad", "Fecha_Siembra", "Fecha_Cosecha"),
+         c("name_2", "PPOP", "PDAT", "HDAT"))
 
 # definir la ruta de exportación 
 ruta_exportacion <- "outputs/manejo.csv" 
