@@ -47,7 +47,7 @@ setnames(mng,
            "HDAT"))
 
 # make crop and cultivar_maturity to lower case
-df[, c("crop", "cultivar_maturity") := lapply(.SD, tolower), .SDcols = c("crop", "cultivar_maturity")]
+mng[, c("crop", "cultivar_maturity") := lapply(.SD, tolower), .SDcols = c("crop", "cultivar_maturity")]
 
 # replace Spanish by English water regimen
 mng[regimen == "Secano", regimen := "rainfed"]
