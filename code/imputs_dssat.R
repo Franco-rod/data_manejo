@@ -26,7 +26,7 @@ SELECT_PEDON[, name := fcase(
 
 setnames(SELECT_PEDON, "name", "CODE")
 
-MANEJO <- read.csv("outputs/manejo.csv")
+MANEJO <- fread("outputs/manejo_cultivo.csv", encoding = "Latin-1")
 
 setDT(MANEJO)
 head(MANEJO)
