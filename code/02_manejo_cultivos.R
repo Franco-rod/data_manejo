@@ -1,14 +1,14 @@
 # Autores: Franco Rodriguez; Gonzalo Rizzo
 # Aim: procesamiento de los datos de manejo de los cultivos.
 
-# cargando paquetes
+# load libraries
 library(data.table)
 
-# cargando manejos
+# read management data
 mng <- fread("data/manejo_cultivo.csv", encoding = "Latin-1")
 
 # eliminando las columnas N y Rotacion de cultivos anuales
-mng <- mng[, !c("Rotaciones"), with = FALSE]
+mng[, c("Rotaciones") := NULL]
 
 # columna Ventana de siembra y Ventana de cosecha/terminacion en dos fechas de
 # tipo IDate
@@ -33,6 +33,9 @@ mng <- mng[, !c("Ventana_siembra", "Ventana_cosecha"), with = FALSE]
 mng[, Fecha_Siembra := as.IDate((as.numeric(Fecha_inicio_siembra) + as.numeric(Fecha_fin_siembra)) / 2, origin = "1970-01-01")]
 mng[, Fecha_Cosecha := as.IDate((as.numeric(Fecha_inicio_cosecha) + as.numeric(Fecha_fin_cosecha)) / 2, origin = "1970-01-01")]
 
+# convert sowing and harvest date to posixct format
+mng[, c("Fecha_Siembra", "Fecha_Cosecha") := lapply(.SD, as.POSIXct), .SDcols = c("Fecha_Siembra", "Fecha_Cosecha")]
+
 # eliminando las columnas Ventana_siembra y Ventana_cosecha
 mng <- mng[, !c("Fecha_inicio_siembra", "Fecha_fin_siembra", "Fecha_inicio_cosecha", "Fecha_fin_cosecha", "Cultivar_dominante"), with = FALSE]
 
@@ -43,8 +46,8 @@ setnames(mng,
          c("name_2", "crop", "regimen", "cultivar_maturity", "PPOP", "PDAT",
            "HDAT"))
 
-# make crop lower case
-mng[, crop := tolower(crop)]
+# make crop and cultivar_maturity to lower case
+df[, c("crop", "cultivar_maturity") := lapply(.SD, tolower), .SDcols = c("crop", "cultivar_maturity")]
 
 # replace Spanish by English water regimen
 mng[regimen == "Secano", regimen := "rainfed"]
