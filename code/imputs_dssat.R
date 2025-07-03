@@ -1,8 +1,8 @@
-#created imputs DSSAT
+#created inputs DSSAT
 
 library(data.table)
 
-PEDON <- read.csv("C:/Users/gianf/Desktop/GYGA_UY/outputs/soils/dssat/initial_condition_soils_info.csv")
+PEDON <- read.csv("outputs/soils/dssat/initial_condition_soils_info.csv")
 
 head(PEDON)
 
@@ -26,7 +26,7 @@ SELECT_PEDON[, name := fcase(
 
 setnames(SELECT_PEDON, "name", "CODE")
 
-MANEJO <- read.csv("C:/Users/gianf/Desktop/data_manejo/outputs/manejo.csv")
+MANEJO <- read.csv("outputs/manejo.csv")
 
 setDT(MANEJO)
 head(MANEJO)
@@ -44,7 +44,7 @@ MANEJO[, CODE := fcase(
   default = CODE  # mantiene cualquier otro valor
 )]
 
-ROTACIONES <- read.csv("C:/Users/gianf/Desktop/data_manejo/outputs/ROTACIONES_ESTACION.csv")
+ROTACIONES <- read.csv("outputs/ROTACIONES_ESTACION.csv")
 setDT(ROTACIONES)
 head(ROTACIONES)
 str(ROTACIONES)
