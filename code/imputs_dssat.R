@@ -70,11 +70,7 @@ setnames(BASE_ROT_MANEJO, "PEDON", "ID_SOIL")
 imputs_dssat <- BASE_ROT_MANEJO
 
 #definir la ruta de exportación 
-ruta_exportacion <- "outputs/imputs_dssat.csv" 
+ruta_exportacion <- "outputs/inputs_dssat.csv" 
 
 #exportar la tabla como archivo CSV
 write.csv(imputs_dssat, file = ruta_exportacion, row.names = FALSE)
-
-
-
-
